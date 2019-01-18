@@ -2,33 +2,27 @@ import javax.persistence.EntityManager;
 
 public class DAOGeneric<T> {
 	
-	private Class<T> klass;
-	
-	public DAOGeneric(Class<T> klass) {
-		this.klass = klass;
-	}
-	
-	public void create(T entity) {
+	public static <T> void create(T entity) {
 		EntityManager em = DatabaseHelper.createEntityManager();
 		DatabaseHelper.beginTx(em);
 		em.persist(entity);
 		DatabaseHelper.commitTxAndClose(em);
 	}
 
-	public void update(T entity) {
+	public static <T> void update(T entity) {
 		EntityManager em = DatabaseHelper.createEntityManager();
 		DatabaseHelper.beginTx(em);
 		em.merge(entity);
 		DatabaseHelper.commitTxAndClose(em);
 	}
 
-	public void delete(T entity) {
+	public static <T> void delete(T entity) {
 		
 		if (entity instanceof Vol) {
 			if (((Vol) entity).getId() != null) {
 				EntityManager em = DatabaseHelper.createEntityManager();
 				DatabaseHelper.beginTx(em);
-				T entity2 = em.find(klass, ((Vol) entity).getId());
+				Vol entity2 = em.find(Vol.class, ((Vol) entity).getId());
 				em.remove(entity2);
 				DatabaseHelper.commitTxAndClose(em);
 			}
@@ -37,7 +31,7 @@ public class DAOGeneric<T> {
 				if (((Reservation) entity).getId() != null) {
 					EntityManager em = DatabaseHelper.createEntityManager();
 					DatabaseHelper.beginTx(em);
-					T entity2 = em.find(klass, ((Reservation) entity).getId());
+					Reservation entity2 = em.find(Reservation.class, ((Reservation) entity).getId());
 					em.remove(entity2);
 					DatabaseHelper.commitTxAndClose(em);
 				}
