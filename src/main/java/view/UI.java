@@ -124,8 +124,8 @@ public class UI {
 				}
 			}
 		}
-		LOGGER.info("\nQuel type d'avion voulez-vous choisir ?\n1){}\n2){}\n3){}\n4){}" + TypeAvion.B747,
-				TypeAvion.A330, TypeAvion.A340, TypeAvion.A380, TypeAvion.B747);
+		LOGGER.info("\nQuel type d'avion voulez-vous choisir ?\n1){}\n2){}\n3){}\n4){}", TypeAvion.B747, TypeAvion.A330,
+				TypeAvion.A340, TypeAvion.A380, TypeAvion.B747);
 		str = sc.nextLine();
 		while (typeAvion == null) {
 			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
@@ -151,103 +151,53 @@ public class UI {
 				}
 			}
 		}
-		LOGGER.info("\nDépart : {}", CITY_CHOICE);
-		str = sc.nextLine();
-		while (villeDep == null) {
-			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				LOGGER.info("{}{}", WRONG_INPUT, UR_CHOICE);
-				str = sc.nextLine();
-			} else {
-				switch (str) {
-				case "1":
-					villeDep = Villes.PARIS;
-					break;
-				case "2":
-					villeDep = Villes.MARSEILLE;
-					break;
-				case "3":
-					villeDep = Villes.NANTES;
-					break;
-				case "4":
-					villeDep = Villes.LYON;
-					break;
-				case "5":
-					villeDep = Villes.BORDEAUX;
-					break;
-				default:
-					exit();
-					break;
-				}
-			}
-		}
-		LOGGER.info("\nArrivée :{}", CITY_CHOICE);
-		str = sc.nextLine();
-		while (villeArr == null) {
-			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				LOGGER.info("{}{}", WRONG_INPUT, UR_CHOICE);
-				str = sc.nextLine();
-			} else {
-				switch (str) {
-				case "1":
-					villeArr = Villes.PARIS;
-					break;
-				case "2":
-					villeArr = Villes.MARSEILLE;
-					break;
-				case "3":
-					villeArr = Villes.NANTES;
-					break;
-				case "4":
-					villeArr = Villes.LYON;
-					break;
-				case "5":
-					villeArr = Villes.BORDEAUX;
-					break;
-				default:
-					exit();
-					break;
-				}
-			}
-		}
-		LOGGER.info(MONTH_CHOICE);
-		str = sc.nextLine();
-		while (mois == null) {
-			try {
-				mois = Integer.parseInt(str);
-				if (mois < 1 || mois > 12) {
-					mois = null;
-					LOGGER.info("{}{}", WRONG_INPUT, MONTH_CHOICE);
-					str = sc.nextLine();
-				}
-			} catch (NumberFormatException e) {
-				LOGGER.error(e.getMessage());
-				LOGGER.info("{}{}", WRONG_INPUT, MONTH_CHOICE);
-				str = sc.nextLine();
-			}
-		}
-		LOGGER.info(DAY_CHOICE);
-		str = sc.nextLine();
-		while (jour == null) {
-			try {
-				jour = Integer.parseInt(str);
-				if (jour < 1 || jour > 31) {
-					jour = null;
-					LOGGER.info("{}{}", WRONG_INPUT, DAY_CHOICE);
-					str = sc.nextLine();
-				}
-			} catch (NumberFormatException e) {
-				LOGGER.error(e.getMessage());
-				LOGGER.info("{}{}", WRONG_INPUT, DAY_CHOICE);
-				str = sc.nextLine();
-			}
-		}
+		
+		villeDep = cityChoice(villeDep, 0);
+		villeArr = cityChoice(villeArr, 1);
+		mois = dateChoice(mois, "month");
+		jour = dateChoice(jour, "jour");
 		dateDep = "2019/" + mois + "/" + jour;
 		LOGGER.info("\n{} {} {} {} {},", numVol, typeAvion, villeDep, villeArr, dateDep);
 		Services.creationVol(numVol, typeAvion, villeDep, villeArr, dateDep);
 	}
+	
+	public static int dateChoice(Integer dateValue, String datePart) {
+		
+		int minValue, maxValue;
+		String monthOrDay;
+		
+		if(datePart == "month") {
+			minValue = 1;
+			maxValue = 12;
+			monthOrDay = MONTH_CHOICE;
+			LOGGER.info(monthOrDay);
+		}else {
+			minValue = 1;
+			maxValue = 31;
+			monthOrDay = DAY_CHOICE;
+			LOGGER.info(monthOrDay);
+		}
+		Scanner sc = new Scanner(System.in);
+		String str = sc.nextLine();
+		while (dateValue == null) {
+			try {
+				dateValue = Integer.parseInt(str);
+				if (dateValue < minValue || dateValue > maxValue) {
+					dateValue = null;
+					LOGGER.info("{}{}", WRONG_INPUT, monthOrDay);
+					str = sc.nextLine();
+				}
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
+				LOGGER.info("{}{}", WRONG_INPUT, monthOrDay);
+				str = sc.nextLine();
+			}
+		}
+		return dateValue;
+	}
 
 	public static void menuListeVol() {
-		
+
 		for (Vol vol : Services.listeVol()) {
 			LOGGER.info("\n{}   | {}  | {} | {}		| {}		| {}\n", vol.getNumVol(), vol.getTypeAvion(),
 					vol.getNbPlace(), vol.getVilleDep(), vol.getVilleArr(), vol.getDateDep());
@@ -279,79 +229,62 @@ public class UI {
 				LOGGER.error(e.getMessage());
 			}
 		}
-		LOGGER.info("\n{}", Services.volParNum(choix).toString());
+		LOGGER.info("\n{}", Services.volParNum(choix));
 	}
 
 	public static void menuRechercheVolParVilles() {
 
-		Scanner sc = new Scanner(System.in);
-		String str = null;
 		Villes villeDep = null;
 		Villes villeArr = null;
-		LOGGER.info("\nDépart :{}", CITY_CHOICE);
-		str = sc.nextLine();
-		while (villeDep == null) {
-			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				LOGGER.info("{}{}", WRONG_INPUT, UR_CHOICE);
-				str = sc.nextLine();
-			} else {
-				switch (str) {
-				case "1":
-					villeDep = Villes.PARIS;
-					break;
-				case "2":
-					villeDep = Villes.MARSEILLE;
-					break;
-				case "3":
-					villeDep = Villes.NANTES;
-					break;
-				case "4":
-					villeDep = Villes.LYON;
-					break;
-				case "5":
-					villeDep = Villes.BORDEAUX;
-					break;
-				default:
-					exit();
-					break;
-				}
-			}
-		}
-		LOGGER.info("\nArrivée :{}", CITY_CHOICE);
-		str = sc.nextLine();
-		while (villeArr == null) {
-			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				LOGGER.info("{}{}", WRONG_INPUT, UR_CHOICE);
-				str = sc.nextLine();
-			} else {
-				switch (str) {
-				case "1":
-					villeArr = Villes.PARIS;
-					break;
-				case "2":
-					villeArr = Villes.MARSEILLE;
-					break;
-				case "3":
-					villeArr = Villes.NANTES;
-					break;
-				case "4":
-					villeArr = Villes.LYON;
-					break;
-				case "5":
-					villeArr = Villes.BORDEAUX;
-					break;
-				default:
-					exit();
-					break;
-				}
-			}
-		}
+		villeDep = cityChoice(villeDep, 0);
+		villeArr = cityChoice(villeArr, 1);
 		LOGGER.info("\n{}", Services.volParVilles(villeDep, villeArr));
+	}
+
+	private static Villes cityChoice(Villes ville, int num) {
+
+		if (num == 0) {
+			LOGGER.info("\nDépart :{}", CITY_CHOICE);
+		} else {
+			LOGGER.info("\nArrivé :{}", CITY_CHOICE);
+		}
+
+		Scanner sc = new Scanner(System.in);
+		String str = sc.nextLine();
+		while (ville == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
+				LOGGER.info("{}{}", WRONG_INPUT, UR_CHOICE);
+				str = sc.nextLine();
+			} else {
+				switch (str) {
+				case "1":
+					ville = Villes.PARIS;
+					break;
+				case "2":
+					ville = Villes.MARSEILLE;
+					break;
+				case "3":
+					ville = Villes.NANTES;
+					break;
+				case "4":
+					ville = Villes.LYON;
+					break;
+				case "5":
+					ville = Villes.BORDEAUX;
+					break;
+				default:
+					exit();
+					break;
+				}
+			}
+		}
+		return ville;
 	}
 
 	private static void menuResa() {
 		LOGGER.info(
-				"\nGESTION DES RESERVATIONS\n1) Création d'une réservation\n2) Annuler une réservation\nListe des réservations :\n3) Par vol\n4) Par personne\n{}", UR_CHOICE);
+				"\nGESTION DES RESERVATIONS\n1) Création d'une réservation\n2) Annuler une réservation\nListe des réservations :\n3) Par vol\n4) Par personne\n{}",
+				UR_CHOICE);
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		String str = sc.nextLine();
@@ -437,7 +370,7 @@ public class UI {
 	}
 
 	private static void menuListeResa() {
-		
+
 		Vol volChoisi = new Vol();
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
@@ -462,6 +395,7 @@ public class UI {
 				LOGGER.error(e.getMessage());
 			}
 		}
-		LOGGER.info("\n{}", Services.listeResa(volChoisi).toString());
+		LOGGER.info("\n{}", Services.listeResa(volChoisi));
 	}
+
 }
