@@ -1,9 +1,14 @@
-package Model;
+package model;
+
 import javax.persistence.EntityManager;
 
-import Controller.*;
+import controller.*;
 
 public class DAOGeneric {
+
+	public DAOGeneric() {
+		throw new IllegalStateException("Utility class");
+	}
 
 	public static <T> void create(T entity) {
 		EntityManager em = DatabaseHelper.createEntityManager();

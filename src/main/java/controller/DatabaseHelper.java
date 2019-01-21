@@ -1,12 +1,16 @@
-package Controller;
+package controller;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class DatabaseHelper {
-	
+
 	private static EntityManagerFactory entityManagerFactory;
+
+	private DatabaseHelper() {
+		throw new IllegalStateException("DBHelper class");
+	}
 
 	public static EntityManager createEntityManager() {
 		if (entityManagerFactory == null) {

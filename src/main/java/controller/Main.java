@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Model.*;
-import View.UI;
+import model.*;
+import view.UI;
 
 public class Main {
 

@@ -1,12 +1,16 @@
-package Model;
+package model;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import Controller.*;
+import controller.*;
 
 public class DAOVol  extends DAOGeneric {
+	
+	public DAOVol() {
+		throw new IllegalStateException("Utility class");
+	}
 	
 	public static List<Vol> listeVol() {
 		EntityManager em = DatabaseHelper.createEntityManager();

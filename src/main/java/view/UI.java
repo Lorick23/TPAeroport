@@ -1,8 +1,9 @@
-package View;
+package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Controller.*;
+
+import controller.*;
 
 public class UI {
 	
