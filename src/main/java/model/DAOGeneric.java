@@ -6,7 +6,7 @@ import controller.*;
 
 public class DAOGeneric {
 
-	public DAOGeneric() {
+	protected DAOGeneric() {
 		throw new IllegalStateException("Utility class");
 	}
 
@@ -35,7 +35,6 @@ public class DAOGeneric {
 		}
 
 		if (entity instanceof Reservation && ((Reservation) entity).getId() != null) {
-			// if (((Reservation) entity).getId() != null) {
 			EntityManager em = DatabaseHelper.createEntityManager();
 			DatabaseHelper.beginTx(em);
 			Reservation entity2 = em.find(Reservation.class, ((Reservation) entity).getId());

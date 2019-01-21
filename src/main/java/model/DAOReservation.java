@@ -9,8 +9,8 @@ import controller.*;
 
 public class DAOReservation extends DAOGeneric {
 	
-	public DAOReservation() {
-		throw new IllegalStateException("Utility class");
+	private DAOReservation() {
+		super();
 	}
 
 	public static List<Reservation> listeReservation(Vol vol) {
@@ -18,7 +18,6 @@ public class DAOReservation extends DAOGeneric {
 		TypedQuery<Reservation> query = em.createQuery("select r from Reservation r where r.vol=:vol",
 				Reservation.class);
 		query.setParameter("vol", vol);
-		List<Reservation> resa = query.getResultList();
-		return resa;
+		return query.getResultList();
 	}
 }

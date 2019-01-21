@@ -1,32 +1,49 @@
 package view;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import controller.*;
 
 public class UI {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UI.class);
+	private final static String WRONG_INPUT = "\nMauvaise Entrée Utilisateur";
+	private final static String UR_CHOICE = "\nVotre choix :";
+	private final static String NUM_VOL = "\nVeuillez renseigner le numéro de vol composé de 4 chiffres :";
+	private final static String CITY_CHOICE = "\nQuel ville voulez-vous choisir ?\n1) " + Villes.PARIS + "\n2) "
+	+ Villes.MARSEILLE + "\n3) " + Villes.NANTES + "\n4) " + Villes.LYON + "\n5) " + Villes.BORDEAUX;
+	private final static String MONTH_CHOICE = "\nVeuillez renseigner le mois du vol :";
+	private final static String DAY_CHOICE = "\nVeuillez renseigner le jour du vol :";
+	private final static String AGE_CHOICE = "\nQuel est votre AGE ?";
+
+	private UI() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static void mainMenu() {
-		System.out.println("GESTIONNAIRE DES VOLS ET RESERVATION\n1) Gestion des vols\n2) Gestion des réservations\n3) Quitter\n\nVotre choix :");
+		LOGGER.info("\nGESTIONNAIRE DES VOLS ET RESERVATION\n1) Gestion des vols\n2) Gestion des réservations\n3) Quitter\n" + UR_CHOICE);
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		String str = sc.nextLine();
-		
-		while(choix == null) {
-			
-			if(!(str.equals("1") || str.equals("2") ||str.equals("3"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+
+		while (choix == null) {
+
+			if (!(str.equals("1") || str.equals("2") || str.equals("3"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
+			} else {
 				choix = Integer.parseInt(str);
 			}
 		}
-		
-		switch(choix) {
+
+		switch (choix) {
 		case 1:
-			 menuVol();
+			menuVol();
 			break;
 		case 2:
 			menuResa();
@@ -39,30 +56,29 @@ public class UI {
 			break;
 		}
 	}
-	
+
 	private static void exit() {
-		System.out.println("\nAUREVOIR");
+		LOGGER.info("\nAUREVOIR");
 		System.exit(0);
 	}
-	
+
 	private static void menuVol() {
-		System.out.println("\nGESTION DES VOL\n1) Création d'un vol\n2) Liste des vols\nRecherche d'avion :\n3) Par numéro\n4) Par ville de départ et d'arrivée\n\nVotre choix :");
+		LOGGER.info("\nGESTION DES VOL\n1) Création d'un vol\n2) Liste des vols\nRecherche d'avion :\n3) Par numéro\n4) Par ville de départ et d'arrivée\n" + UR_CHOICE);
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		String str = sc.nextLine();
-		
-		while(choix == null) {
-			
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+
+		while (choix == null) {
+
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
+			} else {
 				choix = Integer.parseInt(str);
 			}
 		}
-		
-		switch(choix) {
+
+		switch (choix) {
 		case 1:
 			menuCreationVol();
 			break;
@@ -73,16 +89,16 @@ public class UI {
 			menuRechercheVolParNum();
 			break;
 		case 4:
-			 menuRechercheVolParVilles();
+			menuRechercheVolParVilles();
 			break;
 		default:
 			exit();
 			break;
 		}
 	}
-	
+
 	public static void menuCreationVol() {
-		System.out.println("\nCREATION D'UN VOL\nVeuillez renseigner le numéro de vol composé de 4 chiffres :");
+		LOGGER.info("\nCREATION D'UN VOL" + NUM_VOL);
 		boolean accept = false;
 		Scanner sc = new Scanner(System.in);
 		String str = sc.nextLine();
@@ -93,32 +109,31 @@ public class UI {
 		Integer mois = null;
 		Integer jour = null;
 		String dateDep;
-		
-		while(numVol == null) {
-			
-			if(str.length() != 4) {
-				System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le numéro de vol composé de 4 chiffres :");
+
+		while (numVol == null) {
+
+			if (str.length() != 4) {
+				LOGGER.info(WRONG_INPUT + NUM_VOL);
 				str = sc.nextLine();
-			}
-			else {
+			} else {
 				try {
 					numVol = Integer.parseInt(str);
-				}catch(NumberFormatException e){
-					System.out.println(e.getMessage());
-					System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le numéro de vol composé de 4 chiffres :");
+				} catch (NumberFormatException e) {
+					LOGGER.error(e.getMessage());
+					LOGGER.info(WRONG_INPUT + NUM_VOL);
 					str = sc.nextLine();
 				}
 			}
 		}
-		System.out.println("\nQuel type d'avion voulez-vous choisir ?\n1) "+TypeAvion.A330+"\n2) "+TypeAvion.A340+"\n3) "+TypeAvion.A380+"\n4) "+TypeAvion.B747);
+		LOGGER.info("\nQuel type d'avion voulez-vous choisir ?\n1) " + TypeAvion.A330 + "\n2) " + TypeAvion.A340
+				+ "\n3) " + TypeAvion.A380 + "\n4) " + TypeAvion.B747);
 		str = sc.nextLine();
-		while(typeAvion == null) {
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+		while (typeAvion == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
-				switch(str) {
+			} else {
+				switch (str) {
 				case "1":
 					typeAvion = TypeAvion.A330;
 					break;
@@ -137,30 +152,28 @@ public class UI {
 				}
 			}
 		}
-		
-		System.out.println("\nQuel ville de départ voulez-vous choisir ?\n1) "+Villes.Paris+"\n2) "+Villes.Marseille+"\n3) "+Villes.Nantes+"\n4) "+Villes.Lyon+"\n5) "+Villes.Bordeaux);
+		LOGGER.info("\nDépart :" +CITY_CHOICE);
 		str = sc.nextLine();
-		while(villeDep == null) {
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+		while (villeDep == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
-				switch(str) {
+			} else {
+				switch (str) {
 				case "1":
-					villeDep = Villes.Paris;
+					villeDep = Villes.PARIS;
 					break;
 				case "2":
-					villeDep = Villes.Marseille;
+					villeDep = Villes.MARSEILLE;
 					break;
 				case "3":
-					villeDep = Villes.Nantes;
+					villeDep = Villes.NANTES;
 					break;
 				case "4":
-					villeDep = Villes.Lyon;
+					villeDep = Villes.LYON;
 					break;
 				case "5":
-					villeDep = Villes.Bordeaux;
+					villeDep = Villes.BORDEAUX;
 					break;
 				default:
 					exit();
@@ -168,29 +181,28 @@ public class UI {
 				}
 			}
 		}
-		System.out.println("\nQuel ville d'arrivée voulez-vous choisir ?\n1) "+Villes.Paris+"\n2) "+Villes.Marseille+"\n3) "+Villes.Nantes+"\n4) "+Villes.Lyon+"\n5) "+Villes.Bordeaux);
+		LOGGER.info("\nArrivée :" +CITY_CHOICE);
 		str = sc.nextLine();
-		while(villeArr == null) {
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+		while (villeArr == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
-				switch(str) {
+			} else {
+				switch (str) {
 				case "1":
-					villeArr = Villes.Paris;
+					villeArr = Villes.PARIS;
 					break;
 				case "2":
-					villeArr = Villes.Marseille;
+					villeArr = Villes.MARSEILLE;
 					break;
 				case "3":
-					villeArr = Villes.Nantes;
+					villeArr = Villes.NANTES;
 					break;
 				case "4":
-					villeArr = Villes.Lyon;
+					villeArr = Villes.LYON;
 					break;
 				case "5":
-					villeArr = Villes.Bordeaux;
+					villeArr = Villes.BORDEAUX;
 					break;
 				default:
 					exit();
@@ -198,111 +210,110 @@ public class UI {
 				}
 			}
 		}
-		System.out.println("\nQuel mois voulez-vous partir ?");
+		LOGGER.info(MONTH_CHOICE);
 		str = sc.nextLine();
-		while(mois == null) {
+		while (mois == null) {
 			try {
 				mois = Integer.parseInt(str);
-				if(mois < 1 || mois > 12) {
+				if (mois < 1 || mois > 12) {
 					mois = null;
-					System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le mois du vol :");
+					LOGGER.info(WRONG_INPUT + MONTH_CHOICE);
 					str = sc.nextLine();
 				}
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
-				System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le mois du vol :");
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
+				LOGGER.info(WRONG_INPUT + MONTH_CHOICE);
 				str = sc.nextLine();
 			}
 		}
-		System.out.println("\nQuel jour voulez-vous partir ?");
+		LOGGER.info(DAY_CHOICE);
 		str = sc.nextLine();
-		while(jour == null) {
+		while (jour == null) {
 			try {
 				jour = Integer.parseInt(str);
-				if(jour < 1 || jour > 31) {
+				if (jour < 1 || jour > 31) {
 					jour = null;
-					System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le jour du vol :");
+					LOGGER.info(WRONG_INPUT + DAY_CHOICE);
 					str = sc.nextLine();
 				}
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
-				System.out.println("\nMauvaise Entrée Utilisateur\nVeuillez renseigner le jour du vol :");
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
+				LOGGER.info(WRONG_INPUT + DAY_CHOICE);
 				str = sc.nextLine();
 			}
 		}
-		dateDep = "2019/"+mois+"/"+jour;
-		System.out.println(numVol + " "+typeAvion+" "+villeDep+" "+villeArr+" "+dateDep);
+		dateDep = "2019/" + mois + "/" + jour;
+		LOGGER.info("\n" + numVol + " " + typeAvion + " " + villeDep + " " + villeArr + " " + dateDep);
 		Services.creationVol(numVol, typeAvion, villeDep, villeArr, dateDep);
 	}
 
 	public static void menuListeVol() {
 		List<Vol> vols = new ArrayList<Vol>();
 		vols = Services.listeVol();
-		System.out.println("Numéro | Type  | Place | Départ                 | Arrivé             | Date");
-		for(Vol vol : vols) {
-			System.out.println(vol.getNumVol() +"   | "+vol.getTypeAvion()+"  | "+vol.getNbPlace()+" | "+vol.getVilleDep()+"		| "+vol.getVilleArr()+"		| "+vol.getDateDep()+"\n");
+		LOGGER.info("\nNuméro | Type  | Place | Départ                 | Arrivé             | Date");
+		for (Vol vol : vols) {
+			LOGGER.info("\n" + vol.getNumVol() + "   | " + vol.getTypeAvion() + "  | " + vol.getNbPlace() + " | "
+					+ vol.getVilleDep() + "		| " + vol.getVilleArr() + "		| " + vol.getDateDep() + "\n");
 		}
 	}
 
-	public static void menuRechercheVolParNum(){
+	public static void menuRechercheVolParNum() {
 		List<Vol> vols = new ArrayList<Vol>();
 		vols = Services.listeVol();
-		
+
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		boolean accept = false;
-		
-		//String str = sc.nextLine();
+
 		String str = null;
-		while(!accept){
+		while (!accept) {
 			try {
-				System.out.println("\nVeuillez choisir votre Numero de vol :");
-				for(Vol vol : vols) {
-					System.out.println("- "+vol.getNumVol());
+				LOGGER.info(NUM_VOL);
+				for (Vol vol : vols) {
+					LOGGER.info("- " + vol.getNumVol());
 				}
 				str = sc.nextLine();
 				choix = Integer.parseInt(str);
-				for(Vol vol : vols) {
-					if(choix.equals(vol.getNumVol())) {
+				for (Vol vol : vols) {
+					if (choix.equals(vol.getNumVol())) {
 						accept = true;
 					}
 				}
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
 			}
 		}
-		System.out.println("\n"+Services.volParNum(choix).toString());
+		LOGGER.info("\n" + Services.volParNum(choix).toString());
 	}
 
 	public static void menuRechercheVolParVilles() {
-		
+
 		Scanner sc = new Scanner(System.in);
 		String str = null;
 		Villes villeDep = null;
 		Villes villeArr = null;
-		System.out.println("\nQuel ville de départ voulez-vous choisir ?\n1) "+Villes.Paris+"\n2) "+Villes.Marseille+"\n3) "+Villes.Nantes+"\n4) "+Villes.Lyon+"\n5) "+Villes.Bordeaux);
+		LOGGER.info("\nDépart :" + CITY_CHOICE);
 		str = sc.nextLine();
-		while(villeDep == null) {
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+		while (villeDep == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
-				switch(str) {
+			} else {
+				switch (str) {
 				case "1":
-					villeDep = Villes.Paris;
+					villeDep = Villes.PARIS;
 					break;
 				case "2":
-					villeDep = Villes.Marseille;
+					villeDep = Villes.MARSEILLE;
 					break;
 				case "3":
-					villeDep = Villes.Nantes;
+					villeDep = Villes.NANTES;
 					break;
 				case "4":
-					villeDep = Villes.Lyon;
+					villeDep = Villes.LYON;
 					break;
 				case "5":
-					villeDep = Villes.Bordeaux;
+					villeDep = Villes.BORDEAUX;
 					break;
 				default:
 					exit();
@@ -310,29 +321,28 @@ public class UI {
 				}
 			}
 		}
-		System.out.println("\nQuel ville d'arrivée voulez-vous choisir ?\n1) "+Villes.Paris+"\n2) "+Villes.Marseille+"\n3) "+Villes.Nantes+"\n4) "+Villes.Lyon+"\n5) "+Villes.Bordeaux);
+		LOGGER.info("\nArrivée :" + CITY_CHOICE);
 		str = sc.nextLine();
-		while(villeArr == null) {
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+		while (villeArr == null) {
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4") || str.equals("5"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
-				switch(str) {
+			} else {
+				switch (str) {
 				case "1":
-					villeArr = Villes.Paris;
+					villeArr = Villes.PARIS;
 					break;
 				case "2":
-					villeArr = Villes.Marseille;
+					villeArr = Villes.MARSEILLE;
 					break;
 				case "3":
-					villeArr = Villes.Nantes;
+					villeArr = Villes.NANTES;
 					break;
 				case "4":
-					villeArr = Villes.Lyon;
+					villeArr = Villes.LYON;
 					break;
 				case "5":
-					villeArr = Villes.Bordeaux;
+					villeArr = Villes.BORDEAUX;
 					break;
 				default:
 					exit();
@@ -340,27 +350,26 @@ public class UI {
 				}
 			}
 		}
-		System.out.println("\n"+Services.volParVilles(villeDep, villeArr));
+		LOGGER.info("\n" + Services.volParVilles(villeDep, villeArr));
 	}
-	
+
 	private static void menuResa() {
-		System.out.println("\nGESTION DES RESERVATIONS\n1) Création d'une réservation\n2) Annuler une réservation\nListe des réservations :\n3) Par vol\n4) Par personne\n\nVotre choix :");
+		LOGGER.info("\nGESTION DES RESERVATIONS\n1) Création d'une réservation\n2) Annuler une réservation\nListe des réservations :\n3) Par vol\n4) Par personne\n" + UR_CHOICE);
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		String str = sc.nextLine();
-		
-		while(choix == null) {
-			
-			if(!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
-				System.out.println("Mauvaise Entrée Utilisateur\nVotre choix :");
+
+		while (choix == null) {
+
+			if (!(str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4"))) {
+				LOGGER.info(WRONG_INPUT + UR_CHOICE);
 				str = sc.nextLine();
-			}
-			else {
+			} else {
 				choix = Integer.parseInt(str);
 			}
 		}
-		
-		switch(choix) {
+
+		switch (choix) {
 		case 1:
 			menuCreationResa();
 			break;
@@ -383,7 +392,7 @@ public class UI {
 		Vol volChoisi = new Vol();
 		List<Vol> vols = new ArrayList<Vol>();
 		vols = Services.listeVol();
-		
+
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		boolean accept = false;
@@ -391,84 +400,77 @@ public class UI {
 		String prenom = null;
 		int age = -1;
 		String numResa;
-		
-		//String str = sc.nextLine();
+
 		String str = null;
-		while(!accept){
+		while (!accept) {
 			try {
-				System.out.println("\nCREATION D'UNE RESERVATION\nVeuillez choisir votre Numero de vol :");
-				for(Vol vol : vols) {
-					System.out.println("- "+vol.getNumVol());
+				LOGGER.info("\nCREATION D'UNE RESERVATION" + NUM_VOL);
+				for (Vol vol : vols) {
+					LOGGER.info("- " + vol.getNumVol());
 				}
 				str = sc.nextLine();
 				choix = Integer.parseInt(str);
-				for(Vol vol : vols) {
-					if(choix.equals(vol.getNumVol())) {
+				for (Vol vol : vols) {
+					if (choix.equals(vol.getNumVol())) {
 						volChoisi = vol;
 						accept = true;
 					}
 				}
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
 			}
 		}
 		
-		System.out.println("\nQuel est votre NOM ?");
+		LOGGER.info("\nQuel est votre NOM ?");
 		str = sc.nextLine();
 		nom = str;
 		
-		System.out.println("\nQuel est votre PRENOM ?");
+		LOGGER.info("\nQuel est votre PRENOM ?");
 		str = sc.nextLine();
 		prenom = str;
-		
-		while(age == -1) {
-			System.out.println("\nQuel est votre AGE ?");
+
+		while (age == -1) {
+			LOGGER.info(AGE_CHOICE);
 			str = sc.nextLine();
 			try {
 				age = Integer.parseInt(str);
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
-				System.out.println("\nMauvaise Entrée Utilisateur\nQuel est votre AGE ?");
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
+				LOGGER.info(WRONG_INPUT + AGE_CHOICE);
 				str = sc.nextLine();
 			}
 		}
 		Services.creationResa(volChoisi, nom, prenom, age);
 	}
-	
 
 	private static void menuListeResa() {
 		Vol volChoisi = new Vol();
 		List<Vol> vols = new ArrayList<Vol>();
 		vols = Services.listeVol();
-		
+
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		boolean accept = false;
 		String str = null;
-		
-		while(!accept){
+
+		while (!accept) {
 			try {
-				System.out.println("\nANNULER UNE RESERVATION\nVeuillez choisir votre Numero de vol :");
-				for(Vol vol : vols) {
-					System.out.println("- "+vol.getNumVol());
+				LOGGER.info("\nANNULER UNE RESERVATION" + NUM_VOL);
+				for (Vol vol : vols) {
+					LOGGER.info("- " + vol.getNumVol());
 				}
 				str = sc.nextLine();
 				choix = Integer.parseInt(str);
-				for(Vol vol : vols) {
-					if(choix.equals(vol.getNumVol())) {
+				for (Vol vol : vols) {
+					if (choix.equals(vol.getNumVol())) {
 						volChoisi = vol;
 						accept = true;
 					}
 				}
-			}catch(NumberFormatException e){
-				System.out.println(e.getMessage());
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage());
 			}
 		}
-		System.out.println("\n"+Services.listeResa(volChoisi).toString());
-		
-	}
-	
-	private static void menuDelResa() {
-		
+		LOGGER.info("\n" + Services.listeResa(volChoisi).toString());
 	}
 }
