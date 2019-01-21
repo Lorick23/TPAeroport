@@ -5,16 +5,11 @@ public enum TypeAvion {
 	private Integer nbPlace;
 	
 	TypeAvion(Integer nbPlace) {
-		this.setNbPlace(nbPlace);
+		this.nbPlace = nbPlace;
 	}
 
 	public Integer getNbPlace() {
 		return nbPlace;
 	}
-
-	public void setNbPlace(Integer nbPlace) {
-		this.nbPlace = nbPlace;
-	}
-
 	
 }

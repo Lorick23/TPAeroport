@@ -3,7 +3,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class DAOReservation extends DAOGeneric<Reservation> {
+public class DAOReservation extends DAOGeneric {
 	
 	public static List<Reservation> listeReservation(Vol vol){
 		EntityManager em = DatabaseHelper.createEntityManager();

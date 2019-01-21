@@ -15,6 +15,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Entity
 @SequenceGenerator(name="vol_seq")
 public class Vol{
@@ -39,6 +42,8 @@ public class Vol{
 	@NotBlank
 	@Temporal(TemporalType.DATE)
 	private Date dateDep;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Services.class);
 	
 	public Vol() {
 		
@@ -110,8 +115,7 @@ public class Vol{
 		try {
 			this.dateDep = new SimpleDateFormat("yyyy/MM/dd").parse(dateDep);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("ParseException", e);
 		}
 	}
 	
