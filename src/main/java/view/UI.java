@@ -12,14 +12,14 @@ import controller.*;
 public class UI {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UI.class);
-	private final static String WRONG_INPUT = "\nMauvaise Entrée Utilisateur";
-	private final static String UR_CHOICE = "\nVotre choix :";
-	private final static String NUM_VOL = "\nVeuillez renseigner le numéro de vol composé de 4 chiffres :";
-	private final static String CITY_CHOICE = "\nQuel ville voulez-vous choisir ?\n1) " + Villes.PARIS + "\n2) "
+	private static final String WRONG_INPUT = "\nMauvaise Entrée Utilisateur";
+	private static final String UR_CHOICE = "\nVotre choix :";
+	private static final String NUM_VOL = "\nVeuillez renseigner le numéro de vol composé de 4 chiffres :";
+	private static final String CITY_CHOICE = "\nQuel ville voulez-vous choisir ?\n1) " + Villes.PARIS + "\n2) "
 	+ Villes.MARSEILLE + "\n3) " + Villes.NANTES + "\n4) " + Villes.LYON + "\n5) " + Villes.BORDEAUX;
-	private final static String MONTH_CHOICE = "\nVeuillez renseigner le mois du vol :";
-	private final static String DAY_CHOICE = "\nVeuillez renseigner le jour du vol :";
-	private final static String AGE_CHOICE = "\nQuel est votre AGE ?";
+	private static final String MONTH_CHOICE = "\nVeuillez renseigner le mois du vol :";
+	private static final String DAY_CHOICE = "\nVeuillez renseigner le jour du vol :";
+	private static final String AGE_CHOICE = "\nQuel est votre AGE ?";
 
 	private UI() {
 		throw new IllegalStateException("Utility class");
@@ -248,19 +248,15 @@ public class UI {
 	}
 
 	public static void menuListeVol() {
-		List<Vol> vols = new ArrayList<Vol>();
-		vols = Services.listeVol();
 		LOGGER.info("\nNuméro | Type  | Place | Départ                 | Arrivé             | Date");
-		for (Vol vol : vols) {
+		for (Vol vol : Services.listeVol()) {
 			LOGGER.info("\n" + vol.getNumVol() + "   | " + vol.getTypeAvion() + "  | " + vol.getNbPlace() + " | "
 					+ vol.getVilleDep() + "		| " + vol.getVilleArr() + "		| " + vol.getDateDep() + "\n");
 		}
 	}
 
 	public static void menuRechercheVolParNum() {
-		List<Vol> vols = new ArrayList<Vol>();
-		vols = Services.listeVol();
-
+		
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		boolean accept = false;
@@ -269,12 +265,12 @@ public class UI {
 		while (!accept) {
 			try {
 				LOGGER.info(NUM_VOL);
-				for (Vol vol : vols) {
+				for (Vol vol : Services.listeVol()) {
 					LOGGER.info("- " + vol.getNumVol());
 				}
 				str = sc.nextLine();
 				choix = Integer.parseInt(str);
-				for (Vol vol : vols) {
+				for (Vol vol : Services.listeVol()) {
 					if (choix.equals(vol.getNumVol())) {
 						accept = true;
 					}
@@ -374,13 +370,13 @@ public class UI {
 			menuCreationResa();
 			break;
 		case 2:
-			System.out.println("2");
+			LOGGER.info("2");
 			break;
 		case 3:
 			menuListeResa();
 			break;
 		case 4:
-			System.out.println("4");
+			LOGGER.info("4");
 			break;
 		default:
 			exit();
@@ -389,28 +385,25 @@ public class UI {
 	}
 
 	private static void menuCreationResa() {
+		
 		Vol volChoisi = new Vol();
-		List<Vol> vols = new ArrayList<Vol>();
-		vols = Services.listeVol();
-
 		Scanner sc = new Scanner(System.in);
 		Integer choix = null;
 		boolean accept = false;
 		String nom = null;
 		String prenom = null;
 		int age = -1;
-		String numResa;
 
 		String str = null;
 		while (!accept) {
 			try {
 				LOGGER.info("\nCREATION D'UNE RESERVATION" + NUM_VOL);
-				for (Vol vol : vols) {
+				for (Vol vol : Services.listeVol()) {
 					LOGGER.info("- " + vol.getNumVol());
 				}
 				str = sc.nextLine();
 				choix = Integer.parseInt(str);
-				for (Vol vol : vols) {
+				for (Vol vol : Services.listeVol()) {
 					if (choix.equals(vol.getNumVol())) {
 						volChoisi = vol;
 						accept = true;

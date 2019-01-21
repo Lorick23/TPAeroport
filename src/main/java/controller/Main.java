@@ -14,7 +14,6 @@ public class Main {
 		DAOVol.create(volA);
 		DAOVol.create(volB);
 		DAOVol.create(volC);
-		
 
 		Reservation resA = new Reservation(volA, "Mattera", "Lorick", 29);
 		Reservation resB = new Reservation(volA, "Payen", "Marine", 25);
@@ -24,7 +23,7 @@ public class Main {
 		DAOReservation.create(resB);
 		DAOReservation.create(resC);
 		
-		UI.mainMenu();		
+		UI.mainMenu();
 	}
 
 }
