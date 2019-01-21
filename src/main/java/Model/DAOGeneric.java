@@ -1,4 +1,7 @@
+package Model;
 import javax.persistence.EntityManager;
+
+import Controller.*;
 
 public class DAOGeneric {
 

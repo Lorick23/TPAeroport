@@ -1,7 +1,10 @@
+package Model;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
+import Controller.*;
 
 public class DAOReservation extends DAOGeneric {
 	
